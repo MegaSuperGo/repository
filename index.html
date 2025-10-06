@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Hill Totally Loose - Official Website</title>
+   <script src="https://cdn.tailwindcss.com"></script>
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <!-- Using Racing Sans One for punk headings and DM Serif Text for body text -->
+   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Text&family=Racing+Sans+One&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+   <style>
+       /* Define the color scheme based strictly on user request:
+        * 1. Header, Footer, and Slime SVGs MUST be #e8e8e8 (structural-bg).
+        * 2. All content accents (text, button color, shadows) MUST be #ffd200 (punk-slime).
+       */
+       :root {
+           --structural-bg: #e8e8e8; /* NEW: Color for Header, Footer, and Slime SVGs */
+           --punk-slime: #ffd200;    /* REVERTED: Main content accent color (neon yellow) */
+           --punk-black: #1a1a1a;
+           --logo-white: #ffffff;
+       }
+
+
+       /* General Styles */
+       body {
+           font-family: 'DM Serif Text', serif; /* Changed from Oswald */
+           background-color: var(--punk-black);
+       }
+       .heading-font {
+           font-family: 'Racing Sans One', cursive; /* Changed from Bangers */
+           letter-spacing: 0.08em; /* Increased letter spacing for chaos */
+       }
+       /* Background for Home/Hero section */
+       .hero-bg {
+           background-image: url('https://placehold.co/1920x1080/1a1a1a/000000?text=');
+           background-size: cover;
+           background-position: center;
+           background-attachment: fixed;
+       }
+       /* CRITICAL FIX: Ensure background image is only on Home, and nowhere else */
+       section:not(#home) {
+           background-image: none !important;
+       }
+       /* Navigation and Section Switching */
+       .nav-link.active {
+           color: var(--punk-black); /* Active link is black on the light grey header */
+       }
+       section {
+           display: none;
+       }
+       section.active {
+           display: block;
+       }
+       /* Punk Theme Elements */
+       .punk-slime-text {
+           color: var(--punk-slime); /* NOW YELLOW: For titles and important text */
+           /* Removed -webkit-text-stroke and text-shadow for a cleaner look */
+       }
+       .punk-white-text {
+           color: var(--logo-white);
+           /* Removed -webkit-text-stroke and text-shadow for a cleaner look */
+       }
+       .punk-border {
+           /* Shadow is now YELLOW/PUNK-SLIME */
+           border: 4px solid #000;
+           box-shadow: 6px 6px 0 var(--punk-slime);
+           border-radius: 8px;
+       }
+      
+       /* Punk Button Styles - Slime Splash Effect! */
+       .punk-button {
+           font-family: 'Racing Sans One', cursive; /* Updated from Bangers */
+           letter-spacing: 0.05em;
+           background-color: var(--punk-slime); /* NOW YELLOW */
+           border: 2px solid #000;
+           color: #000;
+           padding: 0.5rem 2rem;
+           text-transform: uppercase;
+           font-size: 1.25rem;
+           /* Explosive transition */
+           transition: all 0.1s ease-out;
+           box-shadow: 4px 4px 0 #000;
+           border-radius: 4px;
+           display: inline-flex;
+           align-items: center;
+           justify-content: center;
+           cursor: pointer;
+       }
+       /* The cool hover effect: slight lift and neon slime shadow */
+       .punk-button:hover {
+           transform: scale(1.05) translate(-4px, -4px);
+           /* Slime splash shadow is now YELLOW/PUNK-SLIME */
+           box-shadow: 10px 10px 0 var(--punk-slime);
+       }
+       /* Active/Click effect: 'pushes' the button into the surface */
+       .punk-button:active {
+           transform: scale(0.98) translate(2px, 2px);
+           box-shadow: 2px 2px 0 #000;
+           background-color: var(--logo-white); /* White flash on click */
+       }
+      
+       /* SLIME EFFECT: Header Drip UPWARDS (190 degree rotation from previous, fill #e8e8e8) */
+       .header-slime {
+           position: relative;
+           z-index: 10;
+       }
+       .header-slime::after {
+           content: '';
+           position: absolute;
+           bottom: -35px; /* Drip height, maintains position below header */
+           left: 0;
+           width: 100%;
+           height: 35px;
+           /* Upward Drip SVG Path - FILL IS #e8e8e8 */
+           background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 35' preserveAspectRatio='none'%3E%3Cpath fill='%23e8e8e8' d='M0,0L1440,0L1440,35C1200,0,960,25,720,10C480,-5,240,20,0,5L0,0Z'%3E%3C/path%3E%3C/svg%3E");
+           background-repeat: no-repeat;
+           background-size: cover;
+       }
+
+
+       /* SLIME EFFECT: Footer Drip Down (Kept orientation, fill #e8e8e8) */
+        .footer-slime {
+           position: relative;
+       }
+       .footer-slime::before {
+           content: '';
+           position: absolute;
+           top: -35px; /* Positions the drip above the footer element */
+           left: 0;
+           width: 100%;
+           height: 35px;
+           /* Downward Drip SVG Path - FILL IS #e8e8e8 */
+           background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 35' preserveAspectRatio='none'%3E%3Cpath fill='%23e8e8e8' d='M0,35L1440,35L1440,0C1200,35,960,10,720,25C480,40,240,15,0,30L0,35Z'%3E%3C/path%3E%3C/svg%3E");
+           background-repeat: no-repeat;
+           background-size: cover;
+       }
+      
+       /* Event card hover effect */
+       .event-card {
+           transition: transform 0.3s ease;
+           border-radius: 8px;
+       }
+       .event-card:hover {
+           transform: scale(1.02);
+           box-shadow: 10px 10px 0 var(--punk-slime); /* NOW YELLOW */
+       }
+       .event-details {
+           max-height: 0;
+           overflow: hidden;
+           transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
+           padding-top: 0;
+           padding-bottom: 0;
+           color: var(--punk-slime); /* NOW YELLOW */
+           /* Removed text-shadow for a cleaner look */
+       }
+       .event-card:hover .event-details {
+           max-height: 15rem;
+           padding-top: 1.5rem;
+           padding-bottom: 1rem;
+       }
+      
+       /* Placeholder color updated to match punk-slime color in the content sections */
+       .placeholder-yellow-bg {
+            background-color: var(--punk-slime); /* NOW YELLOW */
+       }
+   </style>
+</head>
+<body class="bg-gray-900 text-white">
+
+
+   <!-- Header & Navigation - Background is now Structural Light Grey (#e8e8e8) -->
+   <header class="sticky top-0 z-50" style="background-color: var(--structural-bg);">
+       <div class="header-slime">
+           <nav class="container mx-auto px-6 py-3 flex justify-between items-center relative z-10">
+               <a href="#home" class="nav-trigger">
+                   <!-- LOGO: Shadow is now YELLOW/PUNK-SLIME -->
+                   <a href="https://imgbb.com/"><img src="https://i.ibb.co/nqNrr1Rc/v-loose-hill.png"
+                       alt="Hill Totally Loose Logo"
+                       border="0"
+                       class="h-29 md:h-28 rounded-lg bg-white">
+                       </a>
+                  
+               </a>
+               <div class="hidden md:flex space-x-8 text-xl heading-font">
+                   <a href="#home" class="nav-link text-black hover:text-black transition duration-300 active nav-trigger">Home</a>
+                   <a href="#events" class="nav-link text-black hover:text-black transition duration-300 nav-trigger">Events</a>
+                   <a href="#about" class="nav-link text-black hover:text-black transition duration-300 nav-trigger">About</a>
+                   <a href="#hire" class="nav-link text-black hover:text-black transition duration-300 nav-trigger">Drummers</a>
+               </div>
+               <!-- Mobile Menu Button -->
+               <button id="mobile-menu-button" class="md:hidden text-black focus:outline-none">
+                   <i class="fas fa-bars fa-2x"></i>
+               </button>
+           </nav>
+       </div>
+       <!-- Mobile Menu - Border is Structural Light Grey (#e8e8e8) -->
+       <div id="mobile-menu" class="hidden md:hidden bg-black border-t-2" style="border-color: var(--structural-bg);">
+           <a href="#home" class="block py-4 px-6 text-center text-punk-slime hover:bg-gray-800 transition duration-300 nav-trigger text-lg heading-font border-b border-gray-800">Home</a>
+           <a href="#events" class="block py-4 px-6 text-center text-white hover:bg-gray-800 transition duration-300 nav-trigger text-lg heading-font border-b border-gray-800">Events</a>
+           <a href="#about" class="block py-4 px-6 text-center text-white hover:bg-gray-800 transition duration-300 nav-trigger text-lg heading-font border-b border-gray-800">About</a>
+           <a href="#hire" class="block py-4 px-6 text-center text-white hover:bg-gray-800 transition duration-300 nav-trigger text-lg heading-font">Drummers</a>
+       </div>
+   </header>
+
+
+   <main class="pt-12">
+       <!-- Home Section: Album Spotlight is inside this section's container -->
+       <section id="home" class=>
+           <div id="latest-album-display-container" class="w-11/12 max-w-4xl mx-auto">
+               <!-- Latest Album Spotlight Card -->
+               <div id="latest-album-display" class="flex flex-col md:flex-row items-center bg-gray-900 bg-opacity-90 p-6 md:p-10 punk-border backdrop-blur-sm shadow-2xl">
+                  
+                   <!-- Album Cover -->
+                   <div class="md:w-1/3 mb-6 md:mb-0 md:mr-10">
+                       <!-- Placeholder color is now YELLOW/PUNK-SLIME -->
+                       <a href="https://imgbb.com/"><img src="https://i.ibb.co/Z16PkT5M/Copy-of-Hill.png"
+                       alt="Totally Fried Album Cover"
+                       border="0"
+                       class="w-full h-auto object-cover punk-border" ></a>
+                   </div>
+                  
+                   <!-- Album Details -->
+                   <div class="md:w-2/3 text-left">
+                       <span class="text-xl heading-font block mb-2 text-white">NEWEST ALBUM DROP!</span>
+                       <h2 class="text-5xl md:text-6xl tracking-widest punk-slime-text heading-font mb-4">
+                           Totally Fried
+                       </h2>
+                       <p class="text-gray-300 leading-relaxed text-lg mb-8">
+                           Our latest drop—8 tracks of pure, unfiltered, high-energy skate punk. This one hits different. It's chaos you can skate to, recorded live in a dirty garage.
+                       </p>
+                      
+                       <!-- Spotify Button uses PUNK-SLIME background (YELLOW) -->
+                       <a href="https://spotify.com/album/totallyfried" target="_blank" class="punk-button text-2xl">
+                           <i class="fab fa-spotify mr-3 text-3xl"></i>
+                           Listen Now on Spotify
+                       </a>
+                   </div>
+               </div>
+           </div>
+       </section>
+
+
+       <!-- Events Section -->
+       <section id="events" class="min-h-screen bg-gray-900 py-20">
+           <div class="container mx-auto px-6">
+               <h2 class="text-6xl text-center uppercase mb-12 punk-slime-text heading-font">Upcoming Events</h2>
+               <div class="max-w-4xl mx-auto space-y-8">
+                   <!-- Event Item -->
+                   <div class="event-card bg-gray-800 p-6 punk-border overflow-hidden">
+                       <div class="flex items-center justify-between">
+                           <div class="flex items-center">
+                               <div class="bg-black text-white p-4 text-center mr-6 border-2 border-black rounded-lg punk-border">
+                                   <p class="text-4xl font-bold heading-font text-punk-slime">28</p>
+                                   <p class="uppercase text-lg font-bold text-white">Oct</p>
+                               </div>
+                               <div>
+                                   <h3 class="text-3xl font-bold heading-font">The Viper Room</h3>
+                                   <p class="text-gray-400 text-lg">Los Angeles, CA</p>
+                               </div>
+                           </div>
+                       </div>
+                       <div class="event-details text-center">
+                           <h4 class="text-2xl font-black heading-font">Show Details</h4>
+                           <p class="font-bold text-lg">With special guests: The Gnarlies</p>
+                           <p>Doors at 8:00 PM / Ages 21+</p>
+                           <!-- Removed Get Tickets button -->
+                       </div>
+                   </div>
+                   <!-- Event Item -->
+                    <div class="event-card bg-gray-800 p-6 punk-border overflow-hidden">
+                       <div class="flex items-center justify-between">
+                           <div class="flex items-center">
+                               <div class="bg-black text-white p-4 text-center mr-6 border-2 border-black rounded-lg punk-border">
+                                   <p class="text-4xl font-bold heading-font text-punk-slime">15</p>
+                                   <p class="uppercase text-lg font-bold text-white">Nov</p>
+                               </div>
+                               <div>
+                                   <h3 class="text-3xl font-bold heading-font">Brooklyn Steel</h3>
+                                   <p class="text-gray-400 text-lg">New York, NY</p>
+                               </div>
+                           </div>
+                       </div>
+                        <div class="event-details text-center">
+                           <h4 class="text-2xl font-black heading-font">Show Details</h4>
+                           <p class="font-bold text-lg">Co-headlining with: Skate Riot</p>
+                           <p>Doors at 7:00 PM / All Ages</p>
+                            <!-- Removed Get Tickets button -->
+                       </div>
+                   </div>
+                    <!-- Event Item -->
+                   <div class="event-card bg-gray-800 p-6 punk-border overflow-hidden">
+                       <div class="flex items-center justify-between">
+                           <div class="flex items-center">
+                               <div class="bg-black text-white p-4 text-center mr-6 border-2 border-black rounded-lg punk-border">
+                                   <p class="text-4xl font-bold heading-font text-punk-slime">02</p>
+                                   <p class="uppercase text-lg font-bold text-white">Dec</p>
+                               </div>
+                               <div>
+                                   <h3 class="text-3xl font-bold heading-font">The Fillmore</h3>
+                                   <p class="text-gray-400 text-lg">San Francisco, CA</p>
+                               </div>
+                           </div>
+                       </div>
+                       <div class="event-details text-center">
+                          <h4 class="text-2xl font-black heading-font">Show Details</h4>
+                           <p class="font-bold text-lg">Acoustic Set!</p>
+                           <p>Doors at 9:00 PM / Ages 18+</p>
+                            <!-- Removed Get Tickets button -->
+                       </div>
+                   </div>
+               </div>
+           </div>
+       </section>
+
+
+       <!-- About Us Section -->
+       <section id="about" class="min-h-screen bg-gray-900 py-20">
+           <div class="container mx-auto px-6">
+               <h2 class="text-6xl text-center uppercase mb-12 punk-slime-text heading-font">About The Band</h2>
+               <div class="flex flex-col md:flex-row items-center gap-12">
+                   <div class="md:w-1/2">
+                       <!-- Placeholder color is now YELLOW/PUNK-SLIME -->
+                       <a href="https://imgbb.com/"><img src="https://i.ibb.co/HfcLLKFM/Copy-of-Hill-1.png" alt="Copy-of-Hill-1" border="0"></a>
+                   </div>
+                   <div class="md:w-1/2">
+                       <h3 class="text-5xl font-bold mb-4 punk-white-text heading-font">Forged in a Halfpipe</h3>
+                       <p class="text-gray-300 leading-relaxed text-lg mb-4">
+                          Hill Totally Loose exploded onto the scene in 2020, a four-piece sonic force from the concrete suburbs. We mix fast, loud riffs with lyrics that don't take themselves too seriously. Our music is for the skaters, the misfits, and everyone who's ever wanted to just hang out.
+                       </p>
+                       <p class="text-gray-300 leading-relaxed text-lg">
+                           We're just here to have a good time and play some tunes. Hope you dig it.
+                       </p>
+                   </div>
+               </div>
+           </div>
+       </section>
+
+
+       <!-- Hire a Drummer Section -->
+       <section id="hire" class="min-h-screen bg-gray-900 py-20">
+           <div class="container mx-auto px-6">
+               <h2 class="text-6xl text-center uppercase mb-12 punk-slime-text heading-font">Drummer Auditions</h2>
+               <div class="max-w-2xl mx-auto bg-gray-800 p-8 punk-border">
+                   <p class="text-center text-gray-300 mb-6 text-lg">We need a drummer. If you can hit hard, keep a beat, and aren't a weirdo, hit us up. Show us a video of you playing.</p>
+                   <form>
+                       <div class="mb-4">
+                           <label for="name" class="block text-white mb-2 text-xl heading-font">Name</label>
+                           <input type="text" id="name" required class="w-full bg-gray-700 border-2 border-black text-white p-2 focus:outline-none focus:ring-2 focus:ring-punk-slime focus:border-punk-slime rounded-lg">
+                       </div>
+                       <div class="mb-4">
+                           <label for="email" class="block text-white mb-2 text-xl heading-font">Email</label>
+                           <input type="email" id="email" required class="w-full bg-gray-700 border-2 border-black text-white p-2 focus:outline-none focus:ring-2 focus:ring-punk-slime focus:border-punk-slime rounded-lg">
+                       </div>
+                       <div class="mb-4">
+                           <label for="experience" class="block text-white mb-2 text-xl heading-font">Tell us about you</label>
+                           <textarea id="experience" rows="4" class="w-full bg-gray-700 border-2 border-black text-white p-2 focus:outline-none focus:ring-2 focus:ring-punk-slime focus:border-punk-slime rounded-lg"></textarea>
+                       </div>
+                       <div class="mb-6">
+                           <label for="portfolio" class="block text-white mb-2 text-xl heading-font">Link to you playing drums (YouTube, etc.)</label>
+                           <input type="url" id="portfolio" required class="w-full bg-gray-700 border-2 border-black text-white p-2 focus:outline-none focus:ring-2 focus:ring-punk-slime focus:border-punk-slime rounded-lg">
+                       </div>
+                       <div class="text-center">
+                           <!-- Button uses PUNK-SLIME background (YELLOW) -->
+                           <button type="submit" class="punk-button text-2xl">Submit Audition</button>
+                       </div>
+                   </form>
+               </div>
+           </div>
+       </section>
+   </main>
+
+
+   <!-- Footer - Background is now Structural Light Grey (#e8e8e8) -->
+   <footer class="py-12 footer-slime mt-12" style="background-color: var(--structural-bg);">
+       <div class="container mx-auto px-6 text-center text-gray-400 relative z-20">
+           <div class="flex justify-center space-x-6 mb-6">
+               <!-- Social Icons are Black on Light Grey background -->
+               <a href="https://spotify.com/" target="https://spotify.com/" class="text-3xl text-black hover:text-black transition duration-200 hover:scale-110"><i class="fab fa-spotify"></i></a>
+               <a href="https://music.apple.com/" target="https://music.apple.com/" class="text-3xl text-black hover:text-black transition duration-200 hover:scale-110"><i class="fab fa-apple"></i></a>
+               <a href="https://www.youtube.com/@HillTotallyLoose" target="https://www.youtube.com/@HillTotallyLoose" class="text-3xl text-black hover:text-black transition duration-200 hover:scale-110"><i class="fab fa-youtube"></i></a>
+               <a href="https://www.instagram.com/hilltotallylooseofficial" target="https://www.instagram.com/hilltotallylooseofficial" class="text-3xl text-black hover:text-black transition duration-200 hover:scale-110"><i class="fab fa-instagram"></i></a>
+               <a href="https://x.com/HillTLoose" target="https://x.com/HillTLoose" class="text-3xl text-black hover:text-black transition duration-200 hover:scale-110"><i class="fab fa-twitter"></i></a>
+           </div>
+           <p class="text-lg heading-font text-black">&copy; 2025 HILL TOTALLY LOOSE. ENJOY OUR HITS.</p>
+       </div>
+   </footer>
+
+
+   <script>
+       document.addEventListener('DOMContentLoaded', function() {
+           const navLinks = document.querySelectorAll('.nav-link');
+           const navTriggers = document.querySelectorAll('.nav-trigger');
+           const sections = document.querySelectorAll('main section');
+           const mobileMenuButton = document.getElementById('mobile-menu-button');
+           const mobileMenu = document.getElementById('mobile-menu');
+           const latestAlbumContainer = document.getElementById('latest-album-display-container'); // Get the container
+
+
+           // Fallback for custom alert, since window.alert() is not allowed
+           function customAlert(message) {
+               // Uses the punk-slime variable which is now YELLOW
+               const punkSlimeColor = getComputedStyle(document.documentElement).getPropertyValue('--punk-slime').trim();
+
+
+               const messageBox = document.createElement('div');
+               messageBox.style.cssText = `
+                   position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+                   background: var(--punk-black); border: 4px solid ${punkSlimeColor}; box-shadow: 8px 8px 0 #000;
+                   padding: 2rem; z-index: 9999; color: ${punkSlimeColor}; font-family: 'Racing Sans One', cursive; /* Updated font */
+                   text-align: center; font-size: 1.5rem;
+               `;
+               messageBox.innerHTML = `${message}<br><button class="punk-button mt-4" onclick="this.parentNode.remove()">OK</button>`;
+               document.body.appendChild(messageBox);
+           }
+          
+           // Handle form submission with custom alert
+           const form = document.querySelector('#hire form');
+           form.onsubmit = function(e) {
+               e.preventDefault();
+               customAlert("Audition submitted! We will check your link.");
+               // Optionally clear the form
+               this.reset();
+           };
+
+
+
+
+           function showSection(hash) {
+               // Default to #home if hash is empty or just #
+               const targetHash = (hash === '' || hash === '#') ? '#home' : hash;
+
+
+               sections.forEach(section => {
+                   if ('#' + section.id === targetHash) {
+                       section.classList.add('active');
+                   } else {
+                       section.classList.remove('active');
+                   }
+               });
+
+
+               navLinks.forEach(link => {
+                   if (link.getAttribute('href') === targetHash) {
+                       link.classList.add('active');
+                   } else {
+                       link.classList.remove('active');
+                   }
+               });
+              
+               // CRITICAL FIX: Show Album Spotlight ONLY on #home
+               if (latestAlbumContainer) {
+                   if (targetHash === '#home') {
+                       latestAlbumContainer.classList.remove('hidden');
+                   } else {
+                       latestAlbumContainer.classList.add('hidden');
+                   }
+               }
+              
+               // Close mobile menu on navigation
+               mobileMenu.classList.add('hidden');
+              
+               // Scroll to the top of the section (just below the sticky header)
+               window.scrollTo({
+                   top: 0,
+                   behavior: 'smooth'
+               });
+           }
+
+
+           navTriggers.forEach(trigger => {
+               trigger.addEventListener('click', function(e) {
+                   e.preventDefault();
+                   const targetHash = this.getAttribute('href');
+                   showSection(targetHash);
+                   // Update URL hash without jumping
+                   if(history.pushState) {
+                       history.pushState(null, null, targetHash);
+                   } else {
+                       location.hash = targetHash;
+                   }
+               });
+           });
+
+
+           // Mobile menu toggle
+           mobileMenuButton.addEventListener('click', function() {
+               mobileMenu.classList.toggle('hidden');
+           });
+
+
+           // Show initial section based on URL hash
+           showSection(window.location.hash);
+       });
+   </script>
+
+
+</body>
+</html>
+
+
+
+
+
